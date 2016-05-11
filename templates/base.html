@@ -6,7 +6,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-        <title>Augmatics | {% block title %}{{ title }}{% endblock %}</title>
+        <title>Shopping List | {% block title %}{{ title }}{% endblock %}</title>
 
         <!-- CSS  -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -25,17 +25,14 @@
     </head>
     <body>
         <nav class="light-blue lighten-1" role="navigation">
+            <a href="#" class="brand-logo">Shopping List</a>
             <div class="nav-wrapper container">                
                 {% if user.is_authenticated %}
                     <ul class="right hide-on-med-and-down">
-                        <li><a href="/dashboard">Dashboard</a></li>
-                        <li><a href="{% url 'profile' %}">{% trans 'Profile' %}</a></li>
                         <li><a href="{% url 'logout' %}">{% trans 'Log out' %}</a></li>
                     </ul>
 
                     <ul id="nav-mobile" class="side-nav">
-                        <li><a href="/dashboard">Dashboard</a></li>
-                        <li><a href="{% url 'profile' %}">{% trans 'Profile' %}</a></li>
                         <li><a href="{% url 'logout' %}">{% trans 'Log out' %}</a></li>
                     </ul>
                 {% else %}
@@ -61,7 +58,7 @@
         <footer class="page-footer orange">
             <div class="footer-copyright">
                 <div class="container">
-                Made by <a class="orange-text text-lighten-3" href="http://augmatics.com">Augmatics</a>
+                Made by <a class="orange-text text-lighten-3" href="https://github.com/danthewildcat">Dan Sutich</a>
                 </div>
             </div>
         </footer>

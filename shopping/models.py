@@ -12,12 +12,18 @@ class ShoppingList(models.Model):
     items = models.ManyToManyField('ListItem', blank=True,
                                     related_name='items')
     
+    class Meta:
+        ordering = ( '_date', 'label', )
+    
     def __unicode__(self):
         return "%s - %s" %(self.label, self._date)
 
 class ListItem(models.Model):
     name = models.CharField(max_length=255)
     purchased = models.BooleanField(default=False)
+    
+    class Meta:
+        ordering = ( 'purchased', 'name', )
     
     def __unicode__(self):
         return self.name

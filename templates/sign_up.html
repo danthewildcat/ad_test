@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block content_title %}<h1>{{ title }}</h1>{% endblock %}
+
+{% block content %}
+<div class="row">
+    <form id="create" class="col s12" action="{% url 'create_user' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="col s12">
+            <button type="submit" class="right waves-effect waves-light btn">Create User</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

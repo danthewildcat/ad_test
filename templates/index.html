@@ -1,5 +1,42 @@
 {% extends "base.html" %}
+{% load i18n %}
+
+<script>
+    $(document).ready(function(){
+        $('.collapsible').collapsible();
+    });
+</script>
 
 {% block content %}
-<p>Stuff</p>
+<ul class="collapsible">
+    <li>
+        <div class="collapsible-header active">{% trans 'Login' %}</div>
+        <div class="collapsible-body">
+            <div class="row">
+                <form id="auth" class="col s12" action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    {{ auth_form.as_p }}
+                    <div class="col s12">
+                        <a class="right waves-effect waves-light btn" href="{% url 'password_reset' %}">Forgot Password</a>
+                        <button type="submit" class="right waves-effect waves-light btn">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </li>
+    <li>
+        <div class="collapsible-header">{% trans 'New Account' %}</div>
+        <div class="collapsible-body">
+            <div class="row">
+                <form id="create" class="col s12" action="{% url 'create_user' %}" method="post">
+                    {% csrf_token %}
+                    {{ create_form.as_p }}
+                    <div class="col s12">
+                        <button type="submit" class="right waves-effect waves-light btn">Create User</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </li>
+</ul>
 {% endblock %}

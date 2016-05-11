@@ -15,12 +15,22 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 
-from views import index
+from views import create_user, index, list_item, profile, shopping_list
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', index, name='home'),
     
-    url('^', include('django.contrib.auth.urls'))
+    url(r'^create_user$', create_user, name='create_user'),
+    url(r'^profile$', login_required(profile), name='profile'),
+    
+    url(r'^shopping$', login_required(shopping_list)),
+    url(r'^shopping/(?P<pk>\d+)$', login_required(shopping_list)),
+    
+    url(r'^item$', login_required(list_item)),
+    url(r'^item/(?P<pk>\d+)$', login_required(list_item)),
+    
+    url('^accounts/', include('django.contrib.auth.urls'))
 ]
