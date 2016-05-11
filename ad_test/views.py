@@ -18,15 +18,23 @@ def create_user(request):
             return HttpResponseRedirect(resolve_url('home'))
     else:
         form = UserCreationForm()
+    
+    context = {
+        'title': 'Sign Up',
+        'form': form
+    }
 
-    return render(request, 'sign_up.html', { 'form': form })
+    return render(request, 'sign_up.html', context)
 
 def index(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect(resolve_url('profile'))
         
-    context = {'create_form': UserCreationForm(),
-                'auth_form': AuthenticationForm()}
+    context = {
+        'title': 'Welcome',
+        'create_form': UserCreationForm(),
+        'auth_form': AuthenticationForm()
+    }
 
     return render(request, 'index.html', context)
     
@@ -42,7 +50,7 @@ def list_item(request, pk=None):
     return HttpResponse()
 
 def profile(request):
-    context = {}
+    context = { 'title': 'Profile' }
     return render(request, 'profile.html', context) 
 
 def shopping_list(request, pk=None):
