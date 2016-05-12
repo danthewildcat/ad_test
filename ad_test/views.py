@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.http import (
     HttpResponse, HttpResponseForbidden, HttpResponseRedirect
@@ -15,7 +16,11 @@ def create_user(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(resolve_url('home'))
+            # Log the user in
+            user = authenticate(username=form.cleaned_data['username'],
+                                password=form.cleaned_data['password1'])
+            auth_login(request, user)
+            return HttpResponseRedirect(resolve_url('index'))
     else:
         form = UserCreationForm()
     
@@ -28,44 +33,20 @@ def create_user(request):
 
 def index(request):
     if request.user.is_authenticated():
-        return HttpResponseRedirect(resolve_url('profile'))
-        
-    context = {
-        'title': 'Welcome',
-        'create_form': UserCreationForm(),
-        'auth_form': AuthenticationForm()
-    }
+        list_form = modelform_factory(ShoppingList, fields=(
+                                    'label', '_date', ))
+        context = {
+            'shopping_form': list_form()
+        }
+    else:
+        context = {
+            'title': 'Welcome',
+            'create_form': UserCreationForm(),
+            'auth_form': AuthenticationForm()
+        }
 
     return render(request, 'index.html', context)
-    
-def list_item(request, pk=None):
-    if not request.is_ajax():
-        return HttpResponseForbidden()
-    
-    if pk:
-        pass
-    else:
-        pass
-    
-    return HttpResponse()
 
 def profile(request):
     context = { 'title': 'Profile' }
-    return render(request, 'profile.html', context) 
-
-def shopping_list(request, pk=None):
-    if not request.is_ajax():
-        return HttpResponseForbidden()
-    
-    form = modelform_factory(ShoppingList)
-    
-    if pk:
-        response = ''
-    else:
-        context = {
-            'form': form(),
-            'user': request.user
-        }
-        response = render_to_string('shopping.html', context=context)
-    
-    return HttpResponse(response)
+    return render(request, 'profile.html', context)

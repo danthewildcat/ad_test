@@ -1,13 +1,42 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% load i18n %}
 
+{% block extra_media %}
+{% if user.is_authenticated %}
+<script src="{% static "js/underscore-min.js" %}"></script>
+<script src="{% static "js/backbone-min.js" %}"></script>
+<script src="{% static "js/init-lists.js" %}"></script>
+{% else %}
 <script>
     $(document).ready(function(){
         $('.collapsible').collapsible();
     });
 </script>
+{% endif %}
+{% endblock %}
+
 
 {% block content %}
+{% if user.is_authenticated %}
+<h2>{% trans 'Welcome' %} {{ user }}</h2>
+
+<script type="text/template" id="shopping_list_template">
+    {{ shopping_form.as_p }}
+</script>
+
+<div class="content-container col-container" id="list_container">
+    <div class="left-column z-depth-1" id="active_list">
+    </div>
+    <div class="right-column z-depth-1" id="shopping_lists">
+        <h3>{% trans 'Shopping Lists' %}
+            <a id="new_list" class="btn-floating btn waves-effect waves-light red"><i class="material-icons">add</i></a>
+        </h3>
+        <div class="collection" id="shopping_lists">
+        </div>
+    </div>
+</div>
+{% else %}
 <ul class="collapsible">
     <li>
         <div class="collapsible-header active">{% trans 'Login' %}</div>
@@ -39,4 +68,5 @@
         </div>
     </li>
 </ul>
+{% endif %}
 {% endblock %}

@@ -15,31 +15,30 @@
 
         <script src="{% static "js/jquery-2.2.3.min.js" %}"></script>
         <script src="{% static "js/materialize.min.js" %}"></script>
+        <script src="{% static "js/init.js" %}"></script>
         
-        <script>
-            jQuery(document).ready(function(){
-                $('.button-collapse').sideNav();
-            });
-        </script>
+        {% block extra_media %}{% endblock %}
                 
     </head>
     <body>
         <nav class="light-blue lighten-1" role="navigation">
-            <a href="#" class="brand-logo">Shopping List</a>
+            <a href="{% url 'index' %}" class="brand-logo">Shopping List</a>
             <div class="nav-wrapper container">                
                 {% if user.is_authenticated %}
                     <ul class="right hide-on-med-and-down">
+                        <li><a href="{% url 'index' %}">{% trans 'My Lists' %}</a></li>
+                        <li><a href="{% url 'profile' %}">{% trans 'Profile' %}</a></li>
                         <li><a href="{% url 'logout' %}">{% trans 'Log out' %}</a></li>
                     </ul>
-
                     <ul id="nav-mobile" class="side-nav">
+                        <li><a href="{% url 'index' %}">{% trans 'My Lists' %}</a></li>
+                        <li><a href="{% url 'profile' %}">{% trans 'Profile' %}</a></li>
                         <li><a href="{% url 'logout' %}">{% trans 'Log out' %}</a></li>
                     </ul>
                 {% else %}
                     <ul class="right hide-on-med-and-down">
                         <li><a href="{% url 'login' %}">{% trans 'Log in' %}</a></li>
                     </ul>
-                
                     <ul id="nav-mobile" class="side-nav">
                         <li><a href="{% url 'login' %}">{% trans 'Log in' %}</a></li>
                     </ul>
@@ -47,12 +46,10 @@
                 <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
             </div>
         </nav>
-        <main>
-            <div class="section no-pad-bot" id="index-banner">
-                <div class="container">
-                {% block content_title %}<h1>{{ title }}</h1>{% endblock %}
-                {% block content %}{% endblock %}
-                </div>
+        <main id="main_container">
+            <div class="container">
+            {% block content_title %}{% endblock %}
+            {% block content %}{% endblock %}
             </div>
         </main>
         <footer class="page-footer orange">
@@ -63,3 +60,4 @@
             </div>
         </footer>
     </body>
+</html>

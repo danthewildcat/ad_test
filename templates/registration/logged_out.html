@@ -1,10 +1,23 @@
 {% extends "base.html" %}
 {% load i18n %}
 
+{% block extra_media %}
+<script>
+    $(document).ready(function(){
+        window.setTimeout(function(){
+            window.location = ( "{% url 'index' %}" );
+        }, 3000);
+    });
+</script>
+{% endblock %}
+
+{% block title %}{% trans 'Logged Out' %}{% endblock %}
+{% block content_title %}<h1>{% trans 'Logged Out' %}</h1>{% endblock %}
+
 {% block content %}
 
 <p>{% trans "Thanks for spending some quality time with the Web site today." %}</p>
 
-<p><a href="{% url 'home' %}">{% trans 'Log in again' %}</a></p>
+<p><a href="{% url 'index' %}">{% trans 'Log in again' %}</a></p>
 
 {% endblock %}

@@ -16,21 +16,23 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
+from tastypie.api import Api
 
-from views import create_user, index, list_item, profile, shopping_list
+from shopping.api import ListItemResource, ShoppingListResource
+from views import create_user, index, profile
+
+v1_api = Api(api_name='v1')
+v1_api.register(ShoppingListResource())
+v1_api.register(ListItemResource())
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', index, name='home'),
+    url(r'^$', index, name='index'),
     
     url(r'^create_user$', create_user, name='create_user'),
     url(r'^profile$', login_required(profile), name='profile'),
     
-    url(r'^shopping$', login_required(shopping_list)),
-    url(r'^shopping/(?P<pk>\d+)$', login_required(shopping_list)),
+    url('^accounts/', include('django.contrib.auth.urls')),
     
-    url(r'^item$', login_required(list_item)),
-    url(r'^item/(?P<pk>\d+)$', login_required(list_item)),
-    
-    url('^accounts/', include('django.contrib.auth.urls'))
+    url(r'^api/', include(v1_api.urls)),
 ]
